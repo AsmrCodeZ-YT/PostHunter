@@ -1,0 +1,31 @@
+version: '3.8'
+
+volumes:
+  elasticsearch-data1:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge
+
+services:
+  elk:
+    container_name: es01
+    image: elasticsearch:8.17.2
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 5G
+    #     reservations:
+    #       memory: 4.5G
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+    environment:
+      - discovery.type:single-node
+      - xpack.security.http.ssl.enabled:false
+      - xpack.security.transport.ssl.enabled:false
+    volumes:
+      - elasticsearch-data1:/usr/share/elasticsearch/data
+  
